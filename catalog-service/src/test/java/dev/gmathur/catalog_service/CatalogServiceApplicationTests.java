@@ -1,4 +1,4 @@
-package dev.gmathur.bookstore.catalog;
+package dev.gmathur.catalog_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
