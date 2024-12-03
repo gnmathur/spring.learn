@@ -1,4 +1,4 @@
-package dev.gmathur.catalog_service;
+package dev.gmathur.catalog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class CatalogServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CatalogServiceApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(CatalogServiceApplication.class, args);
+    }
 }

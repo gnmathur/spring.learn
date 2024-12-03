@@ -1,15 +1,13 @@
-package dev.gmathur.catalog_service;
+package dev.gmathur.catalog;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
-@Import(TestcontainersConfiguration.class)
+@Import(TestcontainersConfiguration.class) // Import the TestcontainersConfiguration class to use the PostgreSQL container
 @SpringBootTest
 class CatalogServiceApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    void contextLoads() {}
 }
