@@ -41,6 +41,10 @@ jobs:
       # Only run this step on the main branch
       - if: ${{ github.ref == 'refs/heads/main' }}
         name: Build and push Docker image
-        run:
-          ./mvnw spring-boot:build-image -DskipTests
+        run: |
+          ./mvnw spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${{ vars.DOCKERHUB_USERNAME }}/bookstore-catalog-service:latest
+          if [ $? -ne 0 ]; then
+            echo "Maven build failed"
+            exit 1
+          fi
           docker push ${{ vars.DOCKERHUB_USERNAME }}/bookstore-catalog-service:latest
