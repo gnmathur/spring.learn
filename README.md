@@ -2,7 +2,8 @@
 Spring learning
 
 # Running
-## Stopping running PG container
+## Manual PG container and starting the Catalog service
+### Remove and Start the PG container
 ```bash
 ~/wkspcs/spring-boot.learn/spring-boot-bookstore/deployment/docker-compose % docker-compose -f infra.yml down
 [+] Running 2/2
@@ -11,7 +12,7 @@ Spring learning
 ~/wkspcs/spring-boot.learn/spring-boot-bookstore/deployment/docker-compose %
 ```
 
-## Running PG container
+## Run PG container
 ```bash
 ~/wkspcs/spring-boot.learn/spring-boot-bookstore/deployment/docker-compose % docker-compose -f infra.yml up -d
 [+] Running 2/2
@@ -21,8 +22,25 @@ Spring learning
 ```
 
 ## Running the Catalog service
+Change to the catalog-service directory and run the service
 ```bash
 ~/wkspcs/spring-boot.learn/spring-boot-bookstore/catalog-service % ./mvnw spring-boot:run
+```
+
+## Running the PG and Catalog service containers
+### Build the Catalog service container
+```bash
+~/wkspcs/spring-boot.learn/spring-boot-bookstore % ./mvnw -pl catalog-service spring-boot:build-image -DskipTests
+```
+
+### Run the Catalog service container and PG container
+```bash
+~/wkspcs/spring-boot.learn/spring-boot-bookstore % docker-compose -f deployment/docker-compose/infra.yml -f deployment/docker-compose/apps.yaml up -d
+WARN[0000] /Users/gmathur/wkspcs/spring-boot.learn/spring-boot-bookstore/deployment/docker-compose/apps.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+[+] Running 2/2
+ ✔ Container catalog-db       Healthy                                                                                                                                                                                                                           10.7s
+ ✔ Container catalog-service  Started                                                                                                                                                                                                                           10.8s
+~/wkspcs/spring-boot.learn/spring-boot-bookstore %
 ```
 
 ## Verify the Catalog service
@@ -64,6 +82,7 @@ or a repository. This is not a good design.
           ├── ProductRepository.java
 ```
 This can become tangled too and there might be circular dependencies between the features and other issues.
+
 3. By Component
 ```
 root 
