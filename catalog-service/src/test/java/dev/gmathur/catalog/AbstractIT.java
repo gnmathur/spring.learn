@@ -7,7 +7,9 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 
 // SpringBootTest annotation is used to tell Spring Boot to look for a main configuration class (one with
-// @SpringBootApplication for instance) and use that to start a Spring application context. Its for an integration test.
+// @SpringBootApplication for instance) and use that to start a Spring application context.
+// Its for an integration test
+// Loads the entire application context. Different from @DataJpaTest, @WebMvcTest, etc. which are slices tests.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) // no conflict in pipeline
 @Import(TestcontainersConfiguration.class)
 public abstract class AbstractIT {

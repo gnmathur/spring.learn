@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 // Typically service layer is considered as a transactional boundary. Rollback is done if any exception is thrown in
 // the service layer.
@@ -39,5 +41,9 @@ public class ProductService { // Its made public because its accessed by the con
                 productsPages.hasNext(),
                 productsPages.hasPrevious()
         );
+    }
+
+    public Optional<Product> getProductByCode(String code) {
+        return productRepository.findByCode(code).map(ProductMapper::toProduct);
     }
 }
