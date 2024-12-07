@@ -1,3 +1,5 @@
+[![Catalog Service](https://github.com/gnmathur/spring.learn/actions/workflows/catalog-service.yml/badge.svg)](https://github.com/gnmathur/spring.learn/actions/workflows/catalog-service.yml)
+
 # spring.learn
 Spring learning
 
