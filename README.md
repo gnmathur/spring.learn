@@ -3,6 +3,20 @@
 # spring.learn
 Spring learning
 
+# Design
+```
+Bookstore WebApp --> API Gateway --> Catalog Service -- Catalog DB
+            |                |  \      
+             \               |   +--> Order Service -- Order DB
+              \              |             /    |
+               \             |            /     +-----> RMQ
+                 \           v           v               |
+                  -->  OAuth Auth Server                 |
+                                                         |
+                                                         v  
+                                                  Notification Service
+```
+
 # Running
 ## Manual PG container and starting the Catalog service
 ### Remove and Start the PG container
