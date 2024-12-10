@@ -7,8 +7,10 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.ContextRefreshedEvent;
 
 @Configuration
 class RabbitMQConfig {
@@ -17,13 +19,31 @@ class RabbitMQConfig {
     public RabbitMQConfig(ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
     }
+
+    /**
+     * If RabbitAdmin is being initialized after the context has started and RabbitMQ connectivity has not been
+     * established at the time of initialization, exchange and binding declarations may not happen.
+     * To resolve this, explicitly call rabbitAdmin.initialize() in a custom ApplicationListener:
+     */
+    @Bean
+    public ApplicationListener<ContextRefreshedEvent> rabbitAdminInitializer(RabbitAdmin rabbitAdmin) {
+        return event -> {
+            System.out.println("Initializing RabbitAdmin");
+            rabbitAdmin.initialize();
+        };
+    }
+
     @Bean
     public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
-        return new RabbitAdmin(connectionFactory);
+        System.out.println("Creating RabbitAdmin");
+        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);
+        rabbitAdmin.setAutoStartup(true); // Ensure it starts automatically
+        return rabbitAdmin;
     }
 
     @Bean
     DirectExchange exchange() {
+        System.out.println("Creating exchange: " + applicationProperties.orderEventsExchange());
         return ExchangeBuilder.directExchange(applicationProperties.orderEventsExchange()).build();
     }
 
@@ -34,6 +54,7 @@ class RabbitMQConfig {
 
     @Bean
     Binding newOrdersQueueBinding() {
+        System.out.println("Binding newOrdersQueue to exchange");
         return BindingBuilder.bind(newOrdersQueue())
                 .to(exchange())
                 .with(applicationProperties.newOrdersQueue()); // routing key could have been different than the queue name

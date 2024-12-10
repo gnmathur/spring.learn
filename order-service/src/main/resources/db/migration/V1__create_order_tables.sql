@@ -16,8 +16,8 @@ create table orders (
                         delivery_address_country text not null,
                         status text not null,
                         comments text,
-                        created_at timestamp not null,
-                        updated_at timestamp not null,
+                        created_at timestamp,
+                        updated_at timestamp,
                         primary key (id)
 );
 
