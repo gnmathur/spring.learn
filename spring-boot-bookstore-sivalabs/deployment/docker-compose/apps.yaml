@@ -1,0 +1,29 @@
+version: "3.8"
+name: "spring-boot-microservices-course"
+services:
+  catalog-service:
+    image: narainmg/bookstore-catalog-service
+    container_name: catalog-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      # These will be used by application.properties to connect to the database
+      # Note that the port number is 5432 and not 15432. That's because the host is the container name and the port is
+      # the default port number for PostgreSQL
+      - DB_URL=jdbc:postgresql://catalog-db:5432/bookstore
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      # An alternative to the above is to use the following environment variable, though it does make it language specific
+      # - SPRING_DATASOURCE_URL=jdbc:postgresql://catalog-service-db:5432/bookstore
+      # - SPRING_DATASOURCE_USERNAME=postgres
+      # - SPRING_DATASOURCE_PASSWORD=postgres
+    ports:
+      # application.properties uses port 8081 and we expose the same port here
+      - "8081:8081"
+    restart: unless-stopped
+    depends_on:
+      catalog-db:
+        condition: service_healthy
+    deploy:
+        resources:
+            limits:
+              memory: 700M
